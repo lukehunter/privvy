@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, privvyMain!</string>
     <string name="app_name">privvy</string>
+<string name="main_no_items"></string>
 </resources>
