@@ -8,7 +8,6 @@ import java.util.List;
 import android.app.ExpandableListActivity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PermissionGroupInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SimpleExpandableListAdapter;
@@ -19,31 +18,6 @@ public class AppList extends ExpandableListActivity
 {
     static String permissions[];
 	static String apps[][];
-//// Shades of grey
-//	  {
-//		"lightgrey","#D3D3D3",
-//		"dimgray","#696969",
-//		"sgi gray 92","#EAEAEA"
-//	  },
-//// Shades of blue
-//	  {
-//		"dodgerblue 2","#1C86EE",
-//		"steelblue 2","#5CACEE",
-//		"powderblue","#B0E0E6"
-//	  },
-//// Shades of yellow
-//	  {
-//		"yellow 1","#FFFF00",
-//		"gold 1","#FFD700",
-//		"darkgoldenrod 1","	#FFB90F"
-//	  },
-//// Shades of red
-//	  {
-//		"indianred 1","#FF6A6A",
-//		"firebrick 1","#FF3030",
-//		"maroon","#800000"
-//	  }
-//    };
 
     /** Called when the activity is first created. */
     @Override
@@ -119,28 +93,6 @@ public class AppList extends ExpandableListActivity
     			result[curIdx][j] = masterList.get(curPerm).get(j);
     		}
     		curIdx++;
-    	}
-    	
-    	return result;
-    }
-    
-    private List<String> findAppsWithPermission(PermissionGroupInfo permission) {
-    	List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
-    	List<PackageInfo> packagesWithPermission = new ArrayList<PackageInfo>();
-    	List<String> result = new ArrayList<String>();
-    	
-    	for (int i = 0; i < packages.size(); i++) {
-    		String[] packagePermissions = packages.get(i).requestedPermissions;
-    		for (int j = 0; j < packagePermissions.length; j++) {
-    			if (packagePermissions[j] == permission.name) {
-    				packagesWithPermission.add(packages.get(i));
-    				break;
-    			}
-    		}
-    	}
-    	
-    	for (int i = 0; i < packagesWithPermission.size(); i++) {
-    		result.add(packagesWithPermission.get(i).packageName);
     	}
     	
     	return result;
