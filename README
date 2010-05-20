@@ -5,6 +5,10 @@ What's in here?
 research/ contains sample code used in developing privvy
 source/ contains the privvy source code
 
+How do I build privvy?
+
+Set up an android development environment. See http://developer.android.com/guide/index.html 
+
 What else is there?
 
 see http://github.com/lukehunter/privvy
