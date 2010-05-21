@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView android:id="@+id/groupname"
 		 xmlns:android="http://schemas.android.com/apk/res/android"
-         android:textSize="16px"
-         android:textStyle="bold"
-		 android:paddingLeft="50px"
+         android:textSize="18px"
+         android:textStyle="bold|italic"
+		 android:paddingLeft="40px"
          android:layout_width="fill_parent"
-         android:layout_height="wrap_content"/>
+         android:layout_height="wrap_content"
+         android:minHeight="50px"
+         android:gravity="center_vertical"/>

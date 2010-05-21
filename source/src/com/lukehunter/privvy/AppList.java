@@ -33,9 +33,9 @@ public class AppList extends ExpandableListActivity
 			new SimpleExpandableListAdapter(
 				this,
 				createGroupList("permissionName", buildPermissionList(dbg)),	// groupData describes the first-level entries
-				R.layout.child_row,	// Layout for the first-level entries
+				R.layout.group_row,	// Layout for the first-level entries
 				new String[] { "permissionName" },	// Key in the groupData maps to display
-				new int[] { R.id.childname },		// Data under "colorName" key goes into this TextView
+				new int[] { R.id.groupname },		// Data under "colorName" key goes into this TextView
 				createChildList("appName", buildAppGroups(dbg)),	// childData describes second-level entries
 				R.layout.child_row,	// Layout for second-level entries
 				new String[] { "appName" },	// Keys in childData maps to display
@@ -50,6 +50,10 @@ public class AppList extends ExpandableListActivity
     	List<PackageInfo> packages = getPackageManager().getInstalledPackages(PackageManager.GET_PERMISSIONS);
     	
     	for (int i = 0; i < packages.size(); i++) {
+    		// filter out system packages
+    		if (packages.get(i).versionName == null) {
+    			continue;
+    		}
     		String[] packagePermissions = packages.get(i).requestedPermissions;
     		Log.d("AppList", packages.get(i).packageName);
     		if (packagePermissions != null) {
