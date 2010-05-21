@@ -8,6 +8,7 @@ import java.util.List;
 import android.app.ExpandableListActivity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.SimpleExpandableListAdapter;
@@ -53,10 +54,22 @@ public class AppList extends ExpandableListActivity
     		Log.d("AppList", packages.get(i).packageName);
     		if (packagePermissions != null) {
 	    		for (int j = 0; j < packagePermissions.length; j++) {
+	    			try {
+	    				String readableName = getPackageManager().getPermissionInfo(packagePermissions[j], 0).loadLabel(getPackageManager()).toString();
+	    				packagePermissions[j] = readableName;
+					} catch (NameNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    			
 	    			if (!result.containsKey(packagePermissions[j])) {
 	    				result.put(packagePermissions[j], new ArrayList<String>());
 	    			}
-	    			result.get(packagePermissions[j]).add(packages.get(i).packageName);
+	    			
+	    			String label = packages.get(i).applicationInfo.loadLabel(getPackageManager()).toString();
+	    			if (label != null && label.length() > 0) {
+	    				result.get(packagePermissions[j]).add(label);
+	    			}
 	    		}
     		}
     		else {
