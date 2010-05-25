@@ -7,7 +7,7 @@ source/ contains the privvy source code
 
 How do I build privvy?
 
-Set up an android development environment. See http://developer.android.com/guide/index.html 
+Set up an android development environment and import the source folder into eclipse. See http://developer.android.com/guide/index.html 
 
 What else is there?
 
