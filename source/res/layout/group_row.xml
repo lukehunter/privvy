@@ -7,11 +7,6 @@
 <TextView android:id="@+id/groupref"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"/>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="horizontal"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content">
 	
 <TextView android:id="@+id/groupname"
 		 xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,8 +18,6 @@
          android:minHeight="35px"
          android:gravity="center_vertical"/>
 	
-</LinearLayout>
-         
 <TextView android:id="@+id/groupdesc"
 		  android:textSize="8px"
 		  android:paddingLeft="50px"
