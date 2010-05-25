@@ -12,6 +12,8 @@ import android.content.pm.PermissionInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SimpleExpandableListAdapter;
 
 // credit: http://mylifewithandroid.blogspot.com/2008/05/expandable-lists.html
@@ -27,7 +29,7 @@ public class AppList extends ExpandableListActivity
     {
         super.onCreate(icicle);
         setContentView(R.layout.main);
-        
+                
         HashMap<String, List<String>> dbg = buildMasterList();
         String[] permissionsRawArr = new String[1];
         permissionsRawArr = permissionsRaw.toArray(permissionsRawArr);
@@ -38,7 +40,7 @@ public class AppList extends ExpandableListActivity
 				createGroupList("permissionName", buildPermissionList(dbg), "permissionDetails", permissionsRawArr),	// groupData describes the first-level entries
 				R.layout.group_row,	// Layout for the first-level entries
 				new String[] { "permissionName", "permissionDetails" },	// Key in the groupData maps to display
-				new int[] { R.id.groupname, R.id.groupdesc },		// Data under "colorName" key goes into this TextView
+				new int[] { R.id.groupname, R.id.groupref },		// Data under "colorName" key goes into this TextView
 				createChildList("appName", buildAppGroups(dbg)),	// childData describes second-level entries
 				R.layout.child_row,	// Layout for second-level entries
 				new String[] { "appName" },	// Keys in childData maps to display
