@@ -8,6 +8,7 @@ import java.util.List;
 import android.app.ExpandableListActivity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PermissionInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,8 +18,8 @@ import android.widget.SimpleExpandableListAdapter;
 
 public class AppList extends ExpandableListActivity
 {
-    static String permissions[];
-	static String apps[][];
+    List<String> permissionsRaw;
+	String apps[][];
 
     /** Called when the activity is first created. */
     @Override
@@ -28,14 +29,16 @@ public class AppList extends ExpandableListActivity
         setContentView(R.layout.main);
         
         HashMap<String, List<String>> dbg = buildMasterList();
+        String[] permissionsRawArr = new String[1];
+        permissionsRawArr = permissionsRaw.toArray(permissionsRawArr);
         
 		SimpleExpandableListAdapter expListAdapter =
 			new SimpleExpandableListAdapter(
 				this,
-				createGroupList("permissionName", buildPermissionList(dbg)),	// groupData describes the first-level entries
+				createGroupList("permissionName", buildPermissionList(dbg), "permissionDetails", permissionsRawArr),	// groupData describes the first-level entries
 				R.layout.group_row,	// Layout for the first-level entries
-				new String[] { "permissionName" },	// Key in the groupData maps to display
-				new int[] { R.id.groupname },		// Data under "colorName" key goes into this TextView
+				new String[] { "permissionName", "permissionDetails" },	// Key in the groupData maps to display
+				new int[] { R.id.groupname, R.id.groupdesc },		// Data under "colorName" key goes into this TextView
 				createChildList("appName", buildAppGroups(dbg)),	// childData describes second-level entries
 				R.layout.child_row,	// Layout for second-level entries
 				new String[] { "appName" },	// Keys in childData maps to display
@@ -48,6 +51,7 @@ public class AppList extends ExpandableListActivity
     	HashMap<String, List<String>> result = new HashMap<String, List<String>>();
     	
     	List<PackageInfo> packages = getPackageManager().getInstalledPackages(PackageManager.GET_PERMISSIONS);
+    	permissionsRaw = new ArrayList<String>();
     	
     	for (int i = 0; i < packages.size(); i++) {
     		// filter out system packages
@@ -57,22 +61,25 @@ public class AppList extends ExpandableListActivity
     		String[] packagePermissions = packages.get(i).requestedPermissions;
     		Log.d("AppList", packages.get(i).packageName);
     		if (packagePermissions != null) {
+    			PermissionInfo curPkgPermissions = null;
+    			String readableName = null;
 	    		for (int j = 0; j < packagePermissions.length; j++) {
 	    			try {
-	    				String readableName = getPackageManager().getPermissionInfo(packagePermissions[j], 0).loadLabel(getPackageManager()).toString();
-	    				packagePermissions[j] = readableName;
+	    				curPkgPermissions = getPackageManager().getPermissionInfo(packagePermissions[j], 0);
+	    				readableName = curPkgPermissions.loadLabel(getPackageManager()).toString();
 					} catch (NameNotFoundException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 	    			
-	    			if (!result.containsKey(packagePermissions[j])) {
-	    				result.put(packagePermissions[j], new ArrayList<String>());
+	    			if (!result.containsKey(readableName)) {
+	    				result.put(readableName, new ArrayList<String>());
+	    				permissionsRaw.add(packagePermissions[j]);
 	    			}
 	    			
 	    			String label = packages.get(i).applicationInfo.loadLabel(getPackageManager()).toString();
 	    			if (label != null && label.length() > 0) {
-	    				result.get(packagePermissions[j]).add(label);
+	    				result.get(readableName).add(label);
 	    			}
 	    		}
     		}
@@ -115,17 +122,17 @@ public class AppList extends ExpandableListActivity
     	return result;
     }
 
-/**
-  * Creates the group list out of the colors[] array according to
-  * the structure required by SimpleExpandableListAdapter. The resulting
-  * List contains Maps. Each Map contains one entry with key "colorName" and
-  * value of an entry in the colors[] array.
-  */
-	private static List createGroupList(String key, String[] groups) {
+	private static List createGroupList(String groupNameKey, String[] groupNames, String groupDescKey, String[] groupDescs) {
 	  ArrayList result = new ArrayList();
-	  for( int i = 0 ; i < groups.length ; ++i ) {
+	  
+	  if (groupNames.length != groupDescs.length) {
+		  return result;
+	  }
+	  
+	  for( int i = 0 ; i < groupNames.length ; ++i ) {
 		HashMap m = new HashMap();
-	    m.put( key,groups[i] );
+	    m.put( groupNameKey, groupNames[i] );
+	    m.put( groupDescKey, groupDescs[i] );
 		result.add( m );
 	  }
 	  return (List)result;
