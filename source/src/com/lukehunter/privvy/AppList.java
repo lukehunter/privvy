@@ -33,8 +33,10 @@ public class AppList extends ExpandableListActivity
     String[] permissionsRawArr = new String[1];
     permissionsRawArr = permissionsRaw.toArray(permissionsRawArr);
 
-    SimpleExpandableListAdapter expListAdapter = new SimpleExpandableListAdapter(this, createGroupList(
-        "permissionName", buildPermissionList(dbg), "permissionDetails", permissionsRawArr), R.layout.group_row, // Layout for the first-level entries
+    SimpleExpandableListAdapter expListAdapter = new SimpleExpandableListAdapter(
+        this, 
+        createGroupList("permissionName", buildPermissionList(dbg), "permissionDetails", permissionsRawArr), 
+        R.layout.group_row, // Layout for the first-level entries
         new String[] { "permissionName", "permissionDetails" }, // Key in the groupData maps to display
         new int[] { R.id.groupname, R.id.groupref }, // Data under "colorName" key goes into this TextView
         createChildList("appName", buildAppGroups(dbg)), // childData describes second-level entries
